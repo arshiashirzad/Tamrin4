@@ -143,8 +143,8 @@ istream& operator>>(istream& is, Person& person) {
 
 class Employee {
 public:
-    std::string name;
-    std::string id;
+    string name;
+    string id;
     Address address;
 
 private:
@@ -153,15 +153,15 @@ private:
     double workToDo;
     double workDone;
 
-    bool isValid(const std::string& id) {
+    bool isValid(const string& id) {
         return true;
     }
 
 public:
-    Employee(const std::string& name, const std::string& id, const Address& address, double hourWork, double salaryPerHour, double workToDo, double workDone)
+    Employee(const string& name, const string& id, const Address& address, double hourWork, double salaryPerHour, double workToDo, double workDone)
             : name(name), id(id), address(address), hourWork(hourWork), salaryPerHour(salaryPerHour), workToDo(workToDo), workDone(workDone) {
         if (!isValid(id)) {
-            std::cout << "Invalid ID" << std::endl;
+            cout << "Invalid ID" << endl;
         }
     }
     // Copy Constructor
@@ -200,11 +200,11 @@ public:
         this->workDone = workDone;
     }
 
-    void setId(const std::string& id) {
+    void setId(const string& id) {
         if (isValid(id)) {
             this->id = id;
         } else {
-            std::cout << "Invalid ID" << std::endl;
+            cout << "Invalid ID" << endl;
         }
     }
 
@@ -227,39 +227,127 @@ public:
         return hourWork * salaryPerHour;
     }
 
-    // Friend functions to overload << and >>
-    friend std::ostream& operator<<(std::ostream& os, const Employee& employee);
-    friend std::istream& operator>>(std::istream& is, Employee& employee);
+    // Friend functions
+    friend ostream& operator<<(ostream& os, const Employee& employee);
+    friend istream& operator>>(istream& is, Employee& employee);
 };
 
-// Overload << operator for Employee
-std::ostream& operator<<(std::ostream& os, const Employee& employee) {
+// Overload <<
+ostream& operator<<(ostream& os, const Employee& employee) {
     os << "Name: " << employee.name << ", ID: " << employee.id << ", Address: " << employee.address
        << ", Hours Worked: " << employee.hourWork << ", Salary Per Hour: " << employee.salaryPerHour
        << ", Work To Do: " << employee.workToDo << ", Work Done: " << employee.workDone;
     return os;
 }
 
-// Overload >> operator for Employee
-std::istream& operator>>(std::istream& is, Employee& employee) {
-    std::cout << "Enter name: ";
-    std::getline(is, employee.name);
-    std::cout << "Enter ID: ";
-    std::getline(is, employee.id);
+// Overload >>
+istream& operator>>(istream& is, Employee& employee) {
+    cout << "Enter name: ";
+    getline(is, employee.name);
+    cout << "Enter ID: ";
+    getline(is, employee.id);
     if (!employee.isValid(employee.id)) {
-        std::cout << "Invalid ID" << std::endl;
+        cout << "Invalid ID" << endl;
     }
-    std::cout << "Enter address details:" << std::endl;
+    cout << "Enter address details:" << endl;
     is >> employee.address;
-    std::cout << "Enter hours worked: ";
+    cout << "Enter hours worked: ";
     is >> employee.hourWork;
-    std::cout << "Enter salary per hour: ";
+    cout << "Enter salary per hour: ";
     is >> employee.salaryPerHour;
-    std::cout << "Enter work to do: ";
+    cout << "Enter work to do: ";
     is >> employee.workToDo;
-    std::cout << "Enter work done: ";
+    cout << "Enter work done: ";
     is >> employee.workDone;
-    is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore the remaining newline character
+    is.ignore(numeric_limits<streamsize>::max(), '\n');  // Ignore the remaining newline character
+    return is;
+}
+
+//Codes for Point and rectangle here:
+class Point {
+private:
+    double x;
+    double y;
+
+public:
+    // Constructor
+    Point(double x = 0, double y = 0) : x(x), y(y) {}
+
+    // Copy Constructor
+    Point(const Point& other) : x(other.x), y(other.y) {}
+
+    // Getters
+    double getX() const {
+        return x;
+    }
+
+    double getY() const {
+        return y;
+    }
+
+    // Setters
+    void setX(double x) {
+        this->x = x;
+    }
+
+    void setY(double y) {
+        this->y = y;
+    }
+
+    // Overload +
+    Point operator+(const Point& other) const {
+        return Point(x + other.x, y + other.y);
+    }
+
+    // Overload -
+    Point operator-(const Point& other) const {
+        return Point(x - other.x, y - other.y);
+    }
+
+    // Overload /=
+    Point& operator/=(double divisor) {
+        if (divisor == 0) {
+            cout<< "cant divide by zero"<<endl;
+        }else{
+        x /= divisor;
+        y /= divisor;
+        }
+        return *this;
+    }
+
+    // Overload =
+    Point& operator=(const Point& other) {
+        if (this != &other) {
+            x = other.x;
+            y = other.y;
+        }
+        return *this;
+    }
+
+    // Overload >= operator (compare distance from (0,0))
+    bool operator>=(const Point& other) const {
+        double distance1 = sqrt(x * x + y * y);
+        double distance2 = sqrt(other.x * other.x + other.y * other.y);
+        return distance1 >= distance2;
+    }
+
+    // Friend functions
+    friend ostream& operator<<(ostream& os, const Point& point);
+    friend istream& operator>>(istream& is, Point& point);
+};
+
+// Overload <<
+ostream& operator<<(ostream& os, const Point& point) {
+    os << "(" << point.x << ", " << point.y << ")";
+    return os;
+}
+
+// Overload >>
+istream& operator>>(istream& is, Point& point) {
+    cout << "Enter x: ";
+    is >> point.x;
+    cout << "Enter y: ";
+    is >> point.y;
     return is;
 }
 int main() {
