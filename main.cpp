@@ -64,6 +64,7 @@ private:
     Address address;
 
     bool isValid(const string& id) {
+
         return true;
     }
 
@@ -137,6 +138,128 @@ istream& operator>>(istream& is, Person& person) {
     }
     cout << "Enter address details:" << endl;
     is >> person.address;
+    return is;
+}
+
+class Employee {
+public:
+    std::string name;
+    std::string id;
+    Address address;
+
+private:
+    double hourWork;
+    double salaryPerHour;
+    double workToDo;
+    double workDone;
+
+    bool isValid(const std::string& id) {
+        return true;
+    }
+
+public:
+    Employee(const std::string& name, const std::string& id, const Address& address, double hourWork, double salaryPerHour, double workToDo, double workDone)
+            : name(name), id(id), address(address), hourWork(hourWork), salaryPerHour(salaryPerHour), workToDo(workToDo), workDone(workDone) {
+        if (!isValid(id)) {
+            std::cout << "Invalid ID" << std::endl;
+        }
+    }
+    // Copy Constructor
+    Employee(const Employee& other)
+            : name(other.name), id(other.id), address(other.address), hourWork(other.hourWork), salaryPerHour(other.salaryPerHour), workToDo(other.workToDo), workDone(other.workDone) {}
+
+    double getHourWork() const {
+        return hourWork;
+    }
+
+    double getSalaryPerHour() const {
+        return salaryPerHour;
+    }
+
+    double getWorkToDo() const {
+        return workToDo;
+    }
+
+    double getWorkDone() const {
+        return workDone;
+    }
+
+    void setHourWork(double hourWork) {
+        this->hourWork = hourWork;
+    }
+
+    void setSalaryPerHour(double salaryPerHour) {
+        this->salaryPerHour = salaryPerHour;
+    }
+
+    void setWorkToDo(double workToDo) {
+        this->workToDo = workToDo;
+    }
+
+    void setWorkDone(double workDone) {
+        this->workDone = workDone;
+    }
+
+    void setId(const std::string& id) {
+        if (isValid(id)) {
+            this->id = id;
+        } else {
+            std::cout << "Invalid ID" << std::endl;
+        }
+    }
+
+    // Overload =
+    Employee& operator=(const Employee& other) {
+        if (this != &other) {
+            name = other.name;
+            id = other.id;
+            address = other.address;
+            hourWork = other.hourWork;
+            salaryPerHour = other.salaryPerHour;
+            workToDo = other.workToDo;
+            workDone = other.workDone;
+        }
+        return *this;
+    }
+
+    // Function to calculate salary based on work done
+    double calculateSalary() const {
+        return hourWork * salaryPerHour;
+    }
+
+    // Friend functions to overload << and >>
+    friend std::ostream& operator<<(std::ostream& os, const Employee& employee);
+    friend std::istream& operator>>(std::istream& is, Employee& employee);
+};
+
+// Overload << operator for Employee
+std::ostream& operator<<(std::ostream& os, const Employee& employee) {
+    os << "Name: " << employee.name << ", ID: " << employee.id << ", Address: " << employee.address
+       << ", Hours Worked: " << employee.hourWork << ", Salary Per Hour: " << employee.salaryPerHour
+       << ", Work To Do: " << employee.workToDo << ", Work Done: " << employee.workDone;
+    return os;
+}
+
+// Overload >> operator for Employee
+std::istream& operator>>(std::istream& is, Employee& employee) {
+    std::cout << "Enter name: ";
+    std::getline(is, employee.name);
+    std::cout << "Enter ID: ";
+    std::getline(is, employee.id);
+    if (!employee.isValid(employee.id)) {
+        std::cout << "Invalid ID" << std::endl;
+    }
+    std::cout << "Enter address details:" << std::endl;
+    is >> employee.address;
+    std::cout << "Enter hours worked: ";
+    is >> employee.hourWork;
+    std::cout << "Enter salary per hour: ";
+    is >> employee.salaryPerHour;
+    std::cout << "Enter work to do: ";
+    is >> employee.workToDo;
+    std::cout << "Enter work done: ";
+    is >> employee.workDone;
+    is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore the remaining newline character
     return is;
 }
 int main() {
