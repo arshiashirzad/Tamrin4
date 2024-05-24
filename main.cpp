@@ -431,6 +431,25 @@ public:
     // Friend functions
     friend ostream& operator<<(ostream& os, const Rectangle& rect);
     friend istream& operator>>(istream& is, Rectangle& rect);
+    //
+    bool isCollisionDetected(const Rectangle& other) const {
+        double thisLeft = startPoint.getX();
+        double thisRight = startPoint.getX() + width;
+        double thisTop = startPoint.getY();
+        double thisBottom = startPoint.getY() + height;
+        double otherLeft = other.startPoint.getX();
+        double otherRight = other.startPoint.getX() + other.width;
+        double otherTop = other.startPoint.getY();
+        double otherBottom = other.startPoint.getY() + other.height;
+        if (thisRight < otherLeft || otherRight < thisLeft) {
+            return false;
+        }
+        if (thisBottom < otherTop || otherBottom < thisTop) {
+            return false;
+        }
+        return true;
+    }
+
 };
 
 // Overload <<
