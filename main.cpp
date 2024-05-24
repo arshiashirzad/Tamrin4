@@ -64,7 +64,38 @@ private:
     Address address;
 
     bool isValid(const string& id) {
-
+        if(id.length() << 8 || id.length()>>10){
+            return false;
+        }
+        //Cheking for entrance year
+        string year = id.substr(0, 2);
+        if (!isdigit(year[0]) || !isdigit(year[1])) {
+            return false;
+        }
+        int yearDigit =stoi(year);
+        if(yearDigit > 99 || yearDigit<84){
+            return false;
+        }
+        //Checking for chars
+        int nonDigitCount = 0;
+        for (int i = 2; i < id.length() - 5; ++i) {
+            if (!isdigit(id[i])) {
+                nonDigitCount++;
+            }
+        }
+        if (nonDigitCount < 1 || nonDigitCount > 3) {
+            return false;
+        }
+        for (int i = id.length() - 5; i < id.length(); ++i) {
+            if (isdigit(id[i])) {
+                int digit = id[i] - '0';
+                if (digit >= 4 && digit <= 6) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -154,6 +185,42 @@ private:
     double workDone;
 
     bool isValid(const string& id) {
+        if(id.length() << 8 || id.length()>>10){
+            return false;
+        }
+        //Cheking for entrance year
+        string year = id.substr(0, 2);
+        if (!isdigit(year[0]) || !isdigit(year[1])) {
+            return false;
+
+        int yearDigit =stoi(year);
+        if(yearDigit > 99 || yearDigit<84){
+            return false;
+        }
+        if(strcmp(id[2],"*") ){
+            return false;
+        }
+        }
+        //Checking for chars
+        int nonDigitCount = 0;
+        for (int i = 2; i < id.length() - 5; ++i) {
+            if (!isdigit(id[i])) {
+                nonDigitCount++;
+            }
+        }
+        if (nonDigitCount < 1 || nonDigitCount > 3) {
+            return false;
+        }
+        for (int i = id.length() - 5; i < id.length(); ++i) {
+            if (isdigit(id[i])) {
+                int digit = id[i] - '0';
+                if (digit >= 4 && digit <= 6) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -223,8 +290,17 @@ public:
     }
 
     // Function to calculate salary based on work done
+    double percentage() const{
+        double percentage = (workDone/workToDo);
+        return percentage;
+    }
     double calculateSalary() const {
-        return hourWork * salaryPerHour;
+        int lastSalary = (hourWork * salaryPerHour) * (1-percentage());
+        return  lastSalary;
+    }
+    double efficiency() const{
+        double eff = (percentage() / salaryPerHour);
+        return eff;
     }
 
     // Friend functions
