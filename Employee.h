@@ -25,6 +25,7 @@ public:
     Employee(const string& name, const string& id, const Address& address, double hourWork, double salaryPerHour, double workToDo, double workDone);
     // Copy constructor
     Employee(const Employee& other);
+    bool isValidId(const string& id) const;
 
     double getHourWork() const;
     double getSalaryPerHour() const;

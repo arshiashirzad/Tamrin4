@@ -5,12 +5,13 @@
 #include "Address.h"
 
 class Person {
+
 private:
     string name;
     string id;
     Address address;
 
-    bool isValid(const string& id);
+    bool isValidId(const string& id);
 
 public:
     // Constructors
