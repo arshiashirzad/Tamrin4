@@ -350,6 +350,106 @@ istream& operator>>(istream& is, Point& point) {
     is >> point.y;
     return is;
 }
+
+class Rectangle {
+private:
+    Point startPoint;
+    double width;
+    double height;
+
+public:
+    // Constructor
+    Rectangle(const Point& startPoint, double width, double height)
+            : startPoint(startPoint), width(width), height(height) {}
+
+    // Copy Constructor
+    Rectangle(const Rectangle& other)
+            : startPoint(other.startPoint), width(other.width), height(other.height) {}
+
+    Point getStartPoint() const {
+        return startPoint;
+    }
+
+    double getWidth() const {
+        return width;
+    }
+
+    double getHeight() const {
+        return height;
+    }
+
+    void setStartPoint(const Point& startPoint) {
+        this->startPoint = startPoint;
+    }
+
+    void setWidth(double width) {
+        this->width = width;
+    }
+
+    void setHeight(double height) {
+        this->height = height;
+    }
+
+    // Overload +=
+    Rectangle& operator+=(const Rectangle& other) {
+        if (startPoint.getX() != other.startPoint.getX() || startPoint.getY() != other.startPoint.getY()) {
+            throw runtime_error("Start points are not equal");
+        }else {
+            width = max(width, other.width);
+            height = max(height, other.height);
+        }
+        return *this;
+    }
+
+    // Overload -=
+    Rectangle& operator-=(const Rectangle& other) {
+        if (startPoint.getX() != other.startPoint.getX() || startPoint.getY() != other.startPoint.getY()) {
+            cout<<("Start points are not equal");
+        }else {
+            width = min(width, other.width);
+            height = min(height, other.height);
+            return *this;
+        }
+    }
+
+    // Overload /
+    Rectangle operator/(const Rectangle& other) const {
+        Point averageStartPoint((startPoint.getX() + other.startPoint.getX()) / 2,
+                                (startPoint.getY() + other.startPoint.getY()) / 2);
+
+        double max_width = max(width, other.width);
+        double min_width = min(width, other.width);
+        double max_height = max(height, other.height);
+        double min_height = min(height, other.height);
+
+        double new_width = max_width / min_width;
+        double new_height = max_height / min_height;
+
+        return Rectangle(averageStartPoint, new_width, new_height);
+    }
+
+    // Friend functions
+    friend ostream& operator<<(ostream& os, const Rectangle& rect);
+    friend istream& operator>>(istream& is, Rectangle& rect);
+};
+
+// Overload <<
+ostream& operator<<(ostream& os, const Rectangle& rect) {
+    os << "Start Point: " << rect.startPoint << ", Width: " << rect.width << ", Height: " << rect.height;
+    return os;
+}
+
+// Overload >>
+istream& operator>>(istream& is, Rectangle& rect) {
+    cout << "Enter start point details:" << endl;
+    is >> rect.startPoint;
+    cout << "Enter width: ";
+    is >> rect.width;
+    cout << "Enter height: ";
+    is >> rect.height;
+    return is;
+}
+
 int main() {
     return 0;
 }
