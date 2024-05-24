@@ -197,7 +197,7 @@ private:
         if(yearDigit > 99 || yearDigit<84){
             return false;
         }
-        if(strcmp(id[2],"*") ){
+        if(id[2] =='*'){
             return false;
         }
         }
